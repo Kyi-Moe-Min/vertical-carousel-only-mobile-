@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Carousel } from "./Carousel";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class extends React.Component {
+  photos = [
+    {
+      img:
+        "https://images.unsplash.com/photo-1579370912611-0005771dfb8b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+      text: "Hello World"
+    },
+    {
+      img:
+        "https://images.unsplash.com/photo-1579370912611-0005771dfb8b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+      text: "Hello World"
+    },
+    {
+      img:
+        "https://images.unsplash.com/photo-1579370912611-0005771dfb8b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+      text: "Hello World"
+    },
+    {
+      img:
+        "https://images.unsplash.com/photo-1579370912611-0005771dfb8b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+      text: "Hello World"
+    },
+    {
+      img:
+        "https://images.unsplash.com/photo-1579370912611-0005771dfb8b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+      text: "Hello World"
+    },
+    {
+      img:
+        "https://images.unsplash.com/photo-1579370912611-0005771dfb8b?ixlib=rb-1.2.1&q=85&fm=jpg&crop=entropy&cs=srgb&ixid=eyJhcHBfaWQiOjE0NTg5fQ",
+      text: "Hello World"
+    }
+  ];
+  render() {
+    return <Carousel photos={this.photos} />;
+  }
 }
-
-export default App;
