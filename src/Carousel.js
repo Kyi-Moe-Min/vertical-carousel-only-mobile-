@@ -5,6 +5,7 @@ export class Carousel extends React.Component {
   oldTime = Date.now();
   oldPosition = 0;
   oldPageY = 0;
+  startPageY = [0, Date.now()];
   timeOut = 0;
   release;
 
@@ -44,6 +45,7 @@ export class Carousel extends React.Component {
   onTouchStart = event => {
     const { pageY } = event.changedTouches[0];
     this.oldPageY = pageY;
+    this.startPageY = [pageY, Date.now()];
     this.release = false;
     clearInterval(this.timeOut);
     this.getCarousel().style.transition = "";
@@ -66,15 +68,32 @@ export class Carousel extends React.Component {
     return "translateY(" + translate + "px)";
   }
 
+  /**
+   * @return 1 for up, -1 for down, 0 for none
+   */
+  getPullDirection = pageY => {
+    const [oldY] = this.startPageY;
+    return oldY - pageY;
+  };
+
+  isPullFast = () => {
+    const oldTime = this.startPageY[1];
+    return Date.now() - oldTime < 150;
+  };
+
   onTouchEnd = event => {
+    const { pageY } = event.changedTouches[0];
     const carousel = this.getCarousel();
-    carousel.style.transition = "all .1s";
+    carousel.style.transition = "all .3s";
     const clientHeight = carousel.parentElement.clientHeight;
-    const multiply = Math.round(this.oldPosition / clientHeight);
+    let multiply = Math.round(this.oldPosition / clientHeight);
+    if (this.getPullDirection(pageY) > 0) multiply--;
+    else if (this.getPullDirection(pageY) < 0) multiply++;
     let final = multiply * clientHeight;
     if (final > 0) final = 0;
-    if (carousel.scrollHeight === Math.abs(final))
+    if (Math.abs(carousel.scrollHeight - Math.abs(final)) < 10)
       final = -carousel.scrollHeight + clientHeight;
+    console.log(carousel.scrollHeight, final, clientHeight);
     carousel.style.transform = this.getTranslate(final);
     this.oldPosition = final;
     this.release = true;

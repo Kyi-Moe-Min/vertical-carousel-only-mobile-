@@ -30,6 +30,9 @@ code {
   height: 100vh;
   width: 100vw;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .photo img {
@@ -41,4 +44,10 @@ code {
 
 .photo .text {
   position: absolute;
+  backdrop-filter: blur(3px);
+  background: #0002;
+  padding: 20px;
+  max-width: 70%;
+  font-size: 40px;
+  color: white;
 }
