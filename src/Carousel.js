@@ -8,34 +8,33 @@ export class Carousel extends React.Component {
   timeOut = 0;
   release;
 
-  isScrollStart() {
-    //return false if start scroll
-    let bool;
-    let now = Date.now();
-    bool = now - this.oldTime < 50;
-    this.oldTime = now;
-    return !bool;
-  }
+  // isScrollStart() {
+  //   //return false if start scroll
+  //   let bool;
+  //   let now = Date.now();
+  //   bool = now - this.oldTime < 50;
+  //   this.oldTime = now;
+  //   return !bool;
+  // }
 
-  onScroll = event => {
-    const { target } = event;
-    if (this.isScrollStart()) this.oldPosition = target.scrollTop;
-    // console.log(this.release);
-    // this.scrollStop(target);
-    // clearTimeout(this.timeOut);
-    // this.timeOut = setTimeout(() => this.scrollStop(target), 50);
-    // console.log(target.clientHeight, target.scrollTop);
-  };
+  // onScroll = event => {
+  //   const { target } = event;
+  //   if (this.isScrollStart()) this.oldPosition = target.scrollTop;
+  //   // console.log(this.release);
+  //   // this.scrollStop(target);
+  //   // clearTimeout(this.timeOut);
+  //   // this.timeOut = setTimeout(() => this.scrollStop(target), 50);
+  //   // console.log(target.clientHeight, target.scrollTop);
+  // };
 
-  isScrollDown = scrollTop => {
-    return scrollTop - this.oldPosition > 0;
-  };
+  // isScrollDown = scrollTop => {
+  //   return scrollTop - this.oldPosition > 0;
+  // };
 
   scrollStop = target => {
     this.isScrollDown(target.scrollTop);
     const multiply = Math.round(target.scrollTop / target.clientHeight);
     target.scrollTop = multiply * target.clientHeight;
-    // console.log("scroll stop");
   };
 
   componentDidMount() {
@@ -45,6 +44,9 @@ export class Carousel extends React.Component {
   onTouchStart = event => {
     const { pageY } = event.changedTouches[0];
     this.oldPageY = pageY;
+    this.release = false;
+    clearInterval(this.timeOut);
+    this.getCarousel().style.transition = "";
   };
 
   getCarousel = () => {
@@ -65,11 +67,17 @@ export class Carousel extends React.Component {
   }
 
   onTouchEnd = event => {
-    // const { pageY } = event.changedTouches[0];
-    const carousel = document.getElementsByClassName("carousel")[0];
+    const carousel = this.getCarousel();
+    carousel.style.transition = "all .1s";
     const clientHeight = carousel.parentElement.clientHeight;
     const multiply = Math.round(this.oldPosition / clientHeight);
-    carousel.style.transform = this.getTranslate(multiply * clientHeight);
+    let final = multiply * clientHeight;
+    if (final > 0) final = 0;
+    if (carousel.scrollHeight === Math.abs(final))
+      final = -carousel.scrollHeight + clientHeight;
+    carousel.style.transform = this.getTranslate(final);
+    this.oldPosition = final;
+    this.release = true;
   };
 
   render() {
